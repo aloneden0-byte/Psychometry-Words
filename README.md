@@ -22,6 +22,17 @@ npm run validate-words   # בדיקת תקינות מבנה מאגר המילי�
 
 כל ההתקדמות וההגדרות נשמרות ב-`localStorage` בדפדפן בלבד — אין שרת ואין שליחת נתונים החוצה.
 
+## פריסה ל-GitHub Pages
+
+הפרויקט מוגדר לרוץ תחת נתיב `/Psychometry-Words/` (`base` ב-`vite.config.ts`) ויש workflow מוכן ב-`.github/workflows/deploy.yml` שבונה ופורס אוטומטית בכל push ל-`main`, וגם ניתן להפעלה ידנית מלשונית Actions (`workflow_dispatch`).
+
+כדי להפעיל בפעם הראשונה:
+1. למזג את השינויים ל-`main` (ה-workflow רץ על push ל-branch הזה).
+2. ב-repo settings: **Settings → Pages → Source → GitHub Actions**.
+3. לאחר ה-push הראשון ל-`main`, ה-workflow ירוץ אוטומטית והאתר יעלה לכתובת `https://aloneden0-byte.github.io/Psychometry-Words/`.
+
+אם רוצים לבדוק build עם ה-base path מקומית לפני הפריסה: `npm run build && npm run preview`.
+
 ## נגישות
 
 הפרויקט נבנה עם דגש על נגישות: ניווט מלא במקלדת (כולל מקשי קיצור למספרים בשאלות ולציוני הזכירה בלימוד), `skip link`, אזורי `aria-live` לעדכוני מצב, תבנית ARIA תקנית ללשוניות, מלכודת פוקוס בחלון העריכה, וטבעת מיקוד בניגודיות גבוהה (ולא בצבע הפסטל של הערכה, שנכשל במבחן WCAG). חמשת ערכות הנושא נבדקו ונותאמו כך שעומדות ב-WCAG AA (יחס ניגודיות 4.5:1 לטקסט, 3:1 לרכיבים לא-טקסטואליים). קיים `tests/e2e/smoke.spec.ts` שמריץ סריקת נגישות אוטומטית (axe) על כל לשונית בכל ערכת נושא.

@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
-const BASE = process.env.SMOKE_BASE_URL || "http://localhost:5183";
+const BASE = process.env.SMOKE_BASE_URL || "http://localhost:5183/Psychometry-Words/";
 
 test("learn tab: flip a card, grade it, reveal announced", async ({ page }) => {
   await page.goto(BASE);
