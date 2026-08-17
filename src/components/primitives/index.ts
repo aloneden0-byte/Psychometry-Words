@@ -7,4 +7,5 @@ export { Toggle } from "./Toggle";
 export { Tag } from "./Tag";
 export { Empty } from "./Empty";
 export { Progress } from "./Progress";
+export { ProgressRing } from "./ProgressRing";
 export { Stat } from "./Stat";

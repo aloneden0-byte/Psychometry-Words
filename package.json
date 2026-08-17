@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "validate-words": "tsx scripts/validate-words.ts"
+    "validate-words": "tsx scripts/validate-words.ts",
+    "check-contrast": "tsx scripts/check-contrast.ts"
   },
   "dependencies": {
     "lucide-react": "^1.31.0",

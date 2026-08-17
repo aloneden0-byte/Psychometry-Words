@@ -1,33 +1,38 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Terminal } from "lucide-react";
-import { Card } from "./components/primitives";
+import { ChevronRight, Terminal } from "lucide-react";
+import { Btn, Card } from "./components/primitives";
 import { SkipLink } from "./components/SkipLink";
 import { TabNav } from "./components/TabNav";
+import { DashboardView } from "./views/DashboardView";
 import { LearnView } from "./views/LearnView";
 import { PracticeView } from "./views/PracticeView";
+import { RewardsView } from "./views/RewardsView";
 import { DataView } from "./views/DataView/DataView";
 import { SettingsView } from "./views/SettingsView";
-import { CodeView } from "./views/CodeView";
 import { usePersistedState } from "./hooks/usePersistedState";
 import { WORDS } from "./data/words";
 import { THEMES, themeVars } from "./theme/themes";
 import { ENGINES } from "./lib/srs/engines";
+import { INITIAL_STREAK, updateStreak, type Streak } from "./lib/gamification";
 import { DEFAULTS, TABS, type TabKey, type Settings } from "./constants";
 import type { Word } from "./data/types";
 
 interface Store {
   settings: Settings;
   words: Word[];
+  streak: Streak;
 }
 
-const INITIAL: Store = { settings: DEFAULTS, words: WORDS };
+const INITIAL: Store = { settings: DEFAULTS, words: WORDS, streak: INITIAL_STREAK };
 
 export default function App() {
   const [store, setStore, persist] = usePersistedState<Store>(INITIAL);
-  const [tab, setTab] = useState<TabKey>("learn");
+  const [tab, setTab] = useState<TabKey>("home");
+  const [dataOpen, setDataOpen] = useState(false);
+  const [quickPractice, setQuickPractice] = useState(false);
   const s: Settings = { ...DEFAULTS, ...store.settings };
   const words = store.words?.length ? store.words : WORDS;
-  const T = THEMES[s.theme] || THEMES.iris;
+  const T = THEMES[s.theme] || THEMES.brainy;
 
   useEffect(() => persist(store), [store, persist]);
 
@@ -37,7 +42,7 @@ export default function App() {
 
   const allTags = useMemo(() => [...new Set(words.flatMap((w) => w.tags))].sort(), [words]);
 
-  /* Derived state — ראו שיעור 6 בלשונית "קוד" */
+  /* Derived state — נגזר מ-words + הגדרות הסינון, לא נשמר בנפרד */
   const deck = useMemo(
     () => words.filter((w) => s.levels.includes(w.level) && (!s.tags.length || w.tags.some((t) => s.tags.includes(t)))),
     [words, s.levels, s.tags],
@@ -74,6 +79,7 @@ export default function App() {
                 },
               },
         ),
+        streak: updateStreak(st.streak ?? INITIAL_STREAK, p.now),
       }));
     },
     [
@@ -94,6 +100,15 @@ export default function App() {
   );
 
   const mastered = words.filter((w) => w.srs.reps >= 3).length;
+
+  const goHome = () => {
+    setQuickPractice(false);
+    setTab("home");
+  };
+  const startQuickPractice = () => {
+    setQuickPractice(true);
+    setTab("practice");
+  };
 
   const vars = {
     ...themeVars(T, s.scale),
@@ -123,17 +138,33 @@ export default function App() {
       </header>
 
       <main id="main" className="px-4 py-5 pb-28 mx-auto" style={{ maxWidth: 620 }} tabIndex={-1}>
-        {TABS.map(
-          ({ k }) =>
-            tab === k && (
-              <div key={k} role="tabpanel" id={`panel-${k}`} aria-labelledby={`tab-${k}`}>
-                {k === "learn" && <LearnView deck={deck} T={T} s={s} grade={grade} glow={s.glow} />}
-                {k === "practice" && <PracticeView deck={deck} T={T} s={s} grade={grade} glow={s.glow} />}
-                {k === "data" && <DataView words={words} setWords={setWords} T={T} s={s} />}
-                {k === "settings" && <SettingsView s={s} set={set} T={T} words={words} allTags={allTags} reset={reset} />}
-                {k === "code" && <CodeView T={T} />}
-              </div>
-            ),
+        {dataOpen ? (
+          <div>
+            <Btn T={T} onClick={() => setDataOpen(false)} style={{ marginBottom: 12 }}>
+              <ChevronRight size={16} className="inline ml-1" aria-hidden="true" />
+              חזרה להגדרות
+            </Btn>
+            <DataView words={words} setWords={setWords} T={T} s={s} />
+          </div>
+        ) : (
+          TABS.map(
+            ({ k }) =>
+              tab === k && (
+                <div key={k} role="tabpanel" id={`panel-${k}`} aria-labelledby={`tab-${k}`}>
+                  {k === "home" && (
+                    <DashboardView T={T} words={words} streak={store.streak ?? INITIAL_STREAK} onNavigate={setTab} onQuickPractice={startQuickPractice} />
+                  )}
+                  {k === "learn" && <LearnView deck={deck} T={T} s={s} grade={grade} glow={s.glow} onDone={goHome} />}
+                  {k === "practice" && (
+                    <PracticeView deck={deck} T={T} s={s} grade={grade} glow={s.glow} sessionSizeOverride={quickPractice ? 5 : undefined} onDone={goHome} />
+                  )}
+                  {k === "rewards" && <RewardsView T={T} words={words} streak={store.streak ?? INITIAL_STREAK} />}
+                  {k === "settings" && (
+                    <SettingsView s={s} set={set} T={T} words={words} allTags={allTags} reset={reset} onOpenData={() => setDataOpen(true)} />
+                  )}
+                </div>
+              ),
+          )
         )}
 
         {s.devMode && s.showState && (
@@ -161,7 +192,7 @@ export default function App() {
         )}
       </main>
 
-      <TabNav tab={tab} setTab={setTab} T={T} />
+      {!dataOpen && <TabNav tab={tab} setTab={setTab} T={T} />}
     </div>
   );
 }
