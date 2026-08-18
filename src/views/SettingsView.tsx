@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
-import { Check, Clock, Code2, Layers, Wand2 } from "lucide-react";
+import { ChevronLeft, Clock, Code2, Database, Layers, Wand2 } from "lucide-react";
 import { Btn, Card, Field, Num, Pill, Toggle } from "../components/primitives";
-import { THEMES } from "../theme/themes";
 import { MODE_META, type Settings } from "../constants";
 import type { Theme } from "../theme/themes";
 import type { Word } from "../data/types";
@@ -13,9 +12,10 @@ interface SettingsViewProps {
   words: Word[];
   allTags: string[];
   reset: () => void;
+  onOpenData: () => void;
 }
 
-export function SettingsView({ s, set, T, words, allTags, reset }: SettingsViewProps) {
+export function SettingsView({ s, set, T, words, allTags, reset, onOpenData }: SettingsViewProps) {
   const S = ({ title, children, icon }: { title: string; children: ReactNode; icon: ReactNode }) => (
     <Card T={T} className="p-4 mb-3">
       <h2 className="flex items-center gap-2 mb-1" style={{ color: T.soft }}>
@@ -30,45 +30,19 @@ export function SettingsView({ s, set, T, words, allTags, reset }: SettingsViewP
 
   return (
     <div>
+      <button
+        onClick={onOpenData}
+        className="w-full flex items-center justify-between rounded-3xl p-4 mb-3 transition-all active:scale-98"
+        style={{ background: T.card, border: `1px solid ${T.line}` }}
+      >
+        <span className="flex items-center gap-2" style={{ color: T.ink, fontWeight: 700 }}>
+          <Database size={16} aria-hidden="true" />
+          ניהול מילים ונתונים
+        </span>
+        <ChevronLeft size={16} color={T.soft} aria-hidden="true" />
+      </button>
+
       <S title="מראה" icon={<Wand2 size={13} aria-hidden="true" />}>
-        <div className="py-3">
-          <div className="text-sm mb-2" style={{ color: T.ink, fontWeight: 600 }}>
-            ערכת צבע
-          </div>
-          <div className="grid grid-cols-5 gap-2" role="radiogroup" aria-label="ערכת צבע">
-            {Object.entries(THEMES).map(([k, t]) => {
-              const active = s.theme === k;
-              return (
-                <button
-                  key={k}
-                  onClick={() => set({ theme: k })}
-                  role="radio"
-                  aria-checked={active}
-                  aria-label={t.name}
-                  className="relative rounded-2xl p-2 transition-all active:scale-95"
-                  style={{ background: t.bg, border: `2px solid ${active ? t.ink : "transparent"}` }}
-                >
-                  {active && (
-                    <span
-                      className="absolute top-1 left-1 rounded-full flex items-center justify-center"
-                      style={{ width: 16, height: 16, background: t.ink, color: t.bg }}
-                    >
-                      <Check size={11} aria-hidden="true" />
-                    </span>
-                  )}
-                  <div className="flex gap-0.5 justify-center mb-1.5">
-                    {[t.a, t.b, t.c, t.d].map((c, i) => (
-                      <div key={i} style={{ width: 7, height: 7, borderRadius: 9, background: c }} />
-                    ))}
-                  </div>
-                  <div className="text-xs" style={{ color: t.ink }}>
-                    {t.name}
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-        </div>
         <Field T={T} label="גודל טקסט" hint={`${Math.round(s.scale * 100)}%`}>
           <label className="sr-only" htmlFor="scale-range">
             גודל טקסט

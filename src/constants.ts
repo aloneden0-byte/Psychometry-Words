@@ -1,4 +1,4 @@
-import { Layers, Target, Database, Settings2, Code2 } from "lucide-react";
+import { Home, Layers, Target, Trophy, Settings2 } from "lucide-react";
 import type { ComponentType } from "react";
 
 export interface Settings {
@@ -33,7 +33,7 @@ export interface Settings {
 }
 
 export const DEFAULTS: Settings = {
-  theme: "iris",
+  theme: "brainy",
   scale: 1,
   nikudMode: "reveal",
   motion: true,
@@ -71,12 +71,12 @@ export const MODE_META: Record<string, { label: string }> = {
   type: { label: "הקלדה" },
 };
 
-export type TabKey = "learn" | "practice" | "data" | "settings" | "code";
+export type TabKey = "home" | "learn" | "practice" | "rewards" | "settings";
 
 export const TABS: { k: TabKey; l: string; I: ComponentType<{ size?: number }> }[] = [
-  { k: "learn", l: "לימוד", I: Layers },
+  { k: "home", l: "בית", I: Home },
+  { k: "learn", l: "למידה", I: Layers },
   { k: "practice", l: "תרגול", I: Target },
-  { k: "data", l: "נתונים", I: Database },
+  { k: "rewards", l: "הישגים", I: Trophy },
   { k: "settings", l: "הגדרות", I: Settings2 },
-  { k: "code", l: "קוד", I: Code2 },
 ];
