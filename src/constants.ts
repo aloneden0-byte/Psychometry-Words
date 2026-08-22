@@ -33,7 +33,7 @@ export interface Settings {
 }
 
 export const DEFAULTS: Settings = {
-  theme: "brainy",
+  theme: "clementine",
   scale: 1,
   nikudMode: "reveal",
   motion: true,
