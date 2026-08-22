@@ -19,7 +19,7 @@ export function RewardsView({ T, words, streak }: RewardsViewProps) {
   const badges = computeBadges({ words, totalStars, mastered, streak });
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <Card T={T} className="p-6 text-center" style={{ background: `linear-gradient(160deg, ${T.gradientFrom}, ${T.gradientTo})` }}>
         <div className="flex items-center justify-center gap-2 mb-1">
           <Star size={28} color="#fff" fill="#fff" aria-hidden="true" />
@@ -32,7 +32,7 @@ export function RewardsView({ T, words, streak }: RewardsViewProps) {
 
       <StreakPill T={T} days={streak.best} label="השיא שלכם (ימים ברצף)" />
 
-      <Card T={T} className="p-4">
+      <Card T={T} className="p-5">
         <div className="flex items-center justify-between mb-3">
           <div>
             <div className="text-xs" style={{ color: T.soft }}>
@@ -53,7 +53,7 @@ export function RewardsView({ T, words, streak }: RewardsViewProps) {
         <div className="text-sm mb-2 px-1" style={{ color: T.ink, fontWeight: 700 }}>
           תגים
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           {badges.map((b) => (
             <BadgeCard key={b.id} T={T} icon={b.icon} title={b.title} description={b.description} earned={b.earned} />
           ))}

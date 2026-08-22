@@ -10,7 +10,16 @@ interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "style"> {
 
 export function Card({ children, T, style, className = "", ...rest }: CardProps) {
   return (
-    <div className={`rounded-3xl ${className}`} style={{ background: T.card, border: `1px solid ${T.line}`, ...style }} {...rest}>
+    <div
+      className={`rounded-[28px] ${className}`}
+      style={{
+        background: T.card,
+        border: `1px solid ${T.line}`,
+        boxShadow: `0 10px 28px -12px ${T.ink}26, 0 2px 8px -2px ${T.ink}14`,
+        ...style,
+      }}
+      {...rest}
+    >
       {children}
     </div>
   );

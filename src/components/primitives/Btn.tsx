@@ -21,11 +21,12 @@ export function Btn({ children, T, tone = "ghost", style, ...rest }: BtnProps) {
     warm: { bg: T.d, bd: T.d, fg: T.onAccent },
   };
   const m = map[tone];
+  const shadow = tone === "ghost" ? "none" : `0 6px 16px -6px ${m.bg}99`;
   return (
     <button
       {...rest}
-      className="rounded-2xl px-4 py-2 text-sm transition-all active:scale-95 disabled:opacity-40"
-      style={{ background: m.bg, border: `1px solid ${m.bd}`, color: m.fg, fontWeight: 600, ...style }}
+      className="rounded-[20px] px-4 py-2 text-sm transition-all active:scale-95 disabled:opacity-40 disabled:shadow-none"
+      style={{ background: m.bg, border: `1px solid ${m.bd}`, color: m.fg, fontWeight: 600, boxShadow: shadow, ...style }}
     >
       {children}
     </button>

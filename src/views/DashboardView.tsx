@@ -21,14 +21,14 @@ export function DashboardView({ T, words, streak, onNavigate, onQuickPractice }:
   const level = computeLevel(mastered);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <StreakPill T={T} days={streak.current} />
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-4">
         <button
           onClick={() => onNavigate("learn")}
-          className="rounded-3xl p-4 flex flex-col items-center gap-2 transition-all active:scale-95"
-          style={{ background: T.b + "55" }}
+          className="rounded-[28px] p-5 flex flex-col items-center gap-2 transition-all active:scale-95"
+          style={{ background: T.b + "55", boxShadow: `0 8px 20px -10px ${T.b}88` }}
         >
           <Layers size={22} color={T.ink} aria-hidden="true" />
           <span className="text-sm" style={{ color: T.ink, fontWeight: 700 }}>
@@ -37,8 +37,8 @@ export function DashboardView({ T, words, streak, onNavigate, onQuickPractice }:
         </button>
         <button
           onClick={onQuickPractice}
-          className="rounded-3xl p-4 flex flex-col items-center gap-2 transition-all active:scale-95"
-          style={{ background: T.c + "55" }}
+          className="rounded-[28px] p-5 flex flex-col items-center gap-2 transition-all active:scale-95"
+          style={{ background: T.c + "55", boxShadow: `0 8px 20px -10px ${T.c}88` }}
         >
           <Target size={22} color={T.ink} aria-hidden="true" />
           <span className="text-sm" style={{ color: T.ink, fontWeight: 700 }}>
@@ -66,11 +66,11 @@ export function DashboardView({ T, words, streak, onNavigate, onQuickPractice }:
         </div>
       </Card>
 
-      <Card T={T} className="p-4">
+      <Card T={T} className="p-5">
         <div className="text-sm mb-3" style={{ color: T.ink, fontWeight: 700 }}>
           ההתקדמות שלך
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           <Progress T={T} cur={mastered} total={words.length} label="מילים מוטמעות" />
           <div className="flex items-center gap-2 text-sm" style={{ color: T.ink }}>
             <Star size={16} color={T.starColor ?? T.d} fill={T.starColor ?? T.d} aria-hidden="true" />

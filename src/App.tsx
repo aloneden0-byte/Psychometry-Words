@@ -32,7 +32,7 @@ export default function App() {
   const [quickPractice, setQuickPractice] = useState(false);
   const s: Settings = { ...DEFAULTS, ...store.settings };
   const words = store.words?.length ? store.words : WORDS;
-  const T = THEMES[s.theme] || THEMES.brainy;
+  const T = THEMES[s.theme] || THEMES.clementine;
 
   useEffect(() => persist(store), [store, persist]);
 
@@ -137,7 +137,7 @@ export default function App() {
         </div>
       </header>
 
-      <main id="main" className="px-4 py-5 pb-28 mx-auto" style={{ maxWidth: 620 }} tabIndex={-1}>
+      <main id="main" className="px-5 py-6 pb-28 mx-auto" style={{ maxWidth: 620 }} tabIndex={-1}>
         {dataOpen ? (
           <div>
             <Btn T={T} onClick={() => setDataOpen(false)} style={{ marginBottom: 12 }}>
